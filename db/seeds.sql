@@ -29,6 +29,6 @@ VALUES  (111, "Jean-Luc", "Picard", 001, NULL),
         (113, "Jack", "Ransom", 102, 114 ),
         (114, "Carol", "Freeman", 101, 113),
         (211, "Geordi", "LaForge", 201, 112),
-        (212, "Reginald", "Barkley", 202, 211),
+        (212, "Reginald", "Barclay", 202, 211),
         (213, "Andarithio", "Billups", 201, 114),
         (311, "Worf", "Mog", 301, NULL);

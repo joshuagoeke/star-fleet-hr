@@ -2,6 +2,18 @@ const mysql = require('mysql2');
 const db = require('./db/connection')
 const utils = require('util')
 db.query = utils.promisify(db.query)
+console.log(`
+___________________________________
+
+┏━━━┓┏┓╋╋╋╋╋╋┏━┳┓╋╋╋╋╋╋┏┓╋┏┓╋┏┳━━━┓
+┃┏━┓┣┛┗┓╋╋╋╋╋┃┏┫┃╋╋╋╋╋┏┛┗┓┃┃╋┃┃┏━┓┃
+┃┗━━╋┓┏╋━━┳━┳┛┗┫┃┏━━┳━┻┓┏┛┃┗━┛┃┗━┛┃
+┗━━┓┃┃┃┃┏┓┃┏┻┓┏┫┃┃┃━┫┃━┫┃╋┃┏━┓┃┏┓┏┛
+┃┗━┛┃┃┗┫┏┓┃┃╋┃┃┃┗┫┃━┫┃━┫┗┓┃┃╋┃┃┃┃┗┓
+┗━━━┛┗━┻┛┗┻┛╋┗┛┗━┻━━┻━━┻━┛┗┛╋┗┻┛┗━┛
+___________________________________
+`)
+
 
 async function viewEmployees() {
     try {
@@ -14,5 +26,7 @@ async function viewEmployees() {
   }
 
   viewEmployees();
+
+  
 
 
