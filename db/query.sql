@@ -20,10 +20,19 @@ FROM starfleet_db.employees employee
 	JOIN roles ON employee.role_id = roles.id
     JOIN departments ON roles.dept_id = departments.id;
 
---add a department
+--add a department NOT TESTED
+INSERT INTO departments (id, dept_name)
+VALUES (`${user input variable }, ${user input variable }`);
+--add a role NOT TESTED
+INSERT INTO roles (id, job_title, salary, dept_id)
+VALUES  (001, "Admiral", "400000", 010);
 
---ad a role
-
---add an employee
+--add an employee NOT TESTED
+INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
+VALUES  (111, "Jean-Luc", "Picard", 001, NULL);
 
 --update an employee role
+
+UPDATE employees
+SET role_id = `${user selected new role}`
+WHERE employees.id = `${number from list}`
