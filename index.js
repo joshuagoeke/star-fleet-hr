@@ -135,8 +135,7 @@ async function addDepartment() {
       }
     ])
 console.log(userNamed.newDept)
-    await db.query(`INSERT INTO departments (id, dept_name) VALUES (${deptNum}, "${userNamed.newDept}"); 
-    `);
+    await db.query(`INSERT INTO departments (id, dept_name) VALUES (${deptNum}, "${userNamed.newDept}"); `);
     const newTable = await db.query(`SELECT dept_name AS Department, id AS 'Department ID' FROM starfleet_db.departments;`)
     console.table(newTable);
     console.log(`${userNamed.newDept} Department Added!`)
@@ -150,13 +149,55 @@ console.log(userNamed.newDept)
 
 async function addRole() {
   try{
-    const deptList = await db.query(`SELECT dept_name FROM departments`)
+    const deptList = await db.query(`SELECT * FROM departments`)
     console.log(deptList);
     let inquarray = [];
+    let deptNums = [];
     for (let i =0; i < deptList.length; i++){
       inquarray.push(deptList[i].dept_name);
+      deptNums.push(deptList[i].id);
     }
     console.log(inquarray);
+    const data = await inquirer.prompt
+      ([
+        {
+          type: 'list',
+          name: 'chosenDept',
+          message: "To which department will this new role belong?",
+          choices: inquarray,
+          
+        },
+        {
+          type: 'input',
+          name: 'newRole',
+          message: "What is the new job title for this role?"
+        },
+        {
+          type: 'number',
+          name: 'newSalary',
+          message: "What is the annual salary for this position?"
+        },
+      ]);
+    console.log(data)
+    console.log(data.chosenDept);
+    var deptID; 
+    deptList.forEach(e => {
+      if (data.chosenDept === e.dept_name){deptID =e.id}
+    });
+    console.log(deptID)
+    console.log(data.newRole);
+    console.log(data.newSalary);
+    const rolesData = await db.query(`SELECT * FROM roles WHERE dept_id = ${deptID}`)
+    const roleID = deptID + rolesData.length + 1;
+    console.log(roleID);
+    await db.query(`INSERT INTO roles (id, job_title, salary, dept_id) VALUES (${roleID}, "${data.newRole}", "${data.newSalary}", ${deptID}); `);
+    const newDisplay = await db.query(`SELECT job_title AS Role, roles.id AS "Job ID",  departments.dept_name AS Department, roles.salary AS "Annual Salary"
+    FROM starfleet_db.roles
+    JOIN starfleet_db.departments ON roles.dept_id = departments.id WHERE dept_id = ${deptID};
+    `)
+    console.table(newDisplay);
+    console.log(`New ${data.newRole} role added to the ${data.chosenDept} Department!`)
+    doThis();
   }catch(err){console.log(err)};
 }
 addRole();
