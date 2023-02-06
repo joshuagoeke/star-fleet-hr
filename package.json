@@ -1,27 +1,25 @@
 {
-  "name": "department-chart",
+  "name": "star-fleet-hr",
   "version": "1.0.0",
-  "description": "In this homework assignment from the University of Texas-Austin Bootcamp we were asked to ...",
+  "description": "In this homework assignment from the University of Texas-Austin Bootcamp we were asked to create a conent management system for an employee database using Node.js, Inquirer, and MySQL.",
   "main": "index.js",
   "directories": {
-    "lib": "lib",
-    "test": "tests"
+    "lib": "lib"
   },
   "scripts": {
-    "test": "jest",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joshuagoeke/node-department-chart.git"
+    "url": "git+https://github.com/joshuagoeke/star-fleet-hr.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joshuagoeke/node-department-chart/issues"
+    "url": "https://github.com/joshuagoeke/star-fleet-hr/issues"
   },
-  "homepage": "https://github.com/joshuagoeke/node-department-chart#readme",
+  "homepage": "https://github.com/joshuagoeke/star-fleet-hr#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
     "inquirer": "^8.2.4",

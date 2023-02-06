@@ -11,7 +11,7 @@ const db = mysql.createConnection(
         password: process.env.DB_PASSWORD,
         database: 'starfleet_db'
     },
-    console.log('Connected to the employee_tracker database.')
+    console.log('Connected to the starfleet_db database.')
 );
 
 module.exports = db;
