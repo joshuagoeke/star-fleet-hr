@@ -109,6 +109,8 @@ async function doThis() {
           break
         case "Add a role":
           console.log("you chose Add a Role");
+          addRole();
+          break
         case "Quit":
           process.exit(0);
         defult:
@@ -150,14 +152,12 @@ console.log(userNamed.newDept)
 async function addRole() {
   try{
     const deptList = await db.query(`SELECT * FROM departments`)
-    console.log(deptList);
+    // console.log(deptList);
     let inquarray = [];
-    let deptNums = [];
     for (let i =0; i < deptList.length; i++){
       inquarray.push(deptList[i].dept_name);
-      deptNums.push(deptList[i].id);
     }
-    console.log(inquarray);
+    // console.log(inquarray);
     const data = await inquirer.prompt
       ([
         {
@@ -178,18 +178,18 @@ async function addRole() {
           message: "What is the annual salary for this position?"
         },
       ]);
-    console.log(data)
-    console.log(data.chosenDept);
+    // console.log(data)
+    // console.log(data.chosenDept);
     var deptID; 
     deptList.forEach(e => {
       if (data.chosenDept === e.dept_name){deptID =e.id}
     });
-    console.log(deptID)
-    console.log(data.newRole);
-    console.log(data.newSalary);
+    // console.log(deptID)
+    // console.log(data.newRole);
+    // console.log(data.newSalary);
     const rolesData = await db.query(`SELECT * FROM roles WHERE dept_id = ${deptID}`)
     const roleID = deptID + rolesData.length + 1;
-    console.log(roleID);
+    // console.log(roleID);
     await db.query(`INSERT INTO roles (id, job_title, salary, dept_id) VALUES (${roleID}, "${data.newRole}", "${data.newSalary}", ${deptID}); `);
     const newDisplay = await db.query(`SELECT job_title AS Role, roles.id AS "Job ID",  departments.dept_name AS Department, roles.salary AS "Annual Salary"
     FROM starfleet_db.roles
@@ -200,8 +200,8 @@ async function addRole() {
     doThis();
   }catch(err){console.log(err)};
 }
-addRole();
+// addRole();
 
 
 
-// doThis(); 
+doThis(); 
