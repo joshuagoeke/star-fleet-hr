@@ -64,37 +64,46 @@ async function viewEmployees() {
   }
   // viewEmployees(); //for testing SQL
 
-const doThis = () =>{
-  inquirer.prompt([
-    {
-      type: 'list',
-      name: 'userAction',
-      message: "What would you like to do?",
-      choices: ["View all departments", "View all roles", "View all employees", "Quit",],
-    },
-//ADD: add a department, add a role, add an employee, and update an employee role
-  ])
-  .then((input) =>{
-  switch (input.userAction) {
-  case "View all departments":
-    console.log("you chose View Departments")
-    viewDepts();
-    break
-  case "View all roles":
-    console.log("you chose View Roles")
-    viewRoles();
-    break
-  case "View all employees":
-    console.log("you chose View Employees")
-    viewEmployees(); 
-    break
-  case "Quit":
-    process.exit(0);
-  defult:
-    console.log("Looks like we got confused.")
-  }
-  
-  })
+async function doThis() {
+  try{
+    const input = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'userAction',
+        message: "What would you like to do?",
+        choices: [
+          "View all departments",
+          "View all roles",
+          "View all employees",
+          "Quit",
+        ],
+      }]);
+      switch (input.userAction) {
+        case "View all departments":
+          console.log("you chose View Departments")
+          viewDepts();
+          break
+        case "View all roles":
+          console.log("you chose View Roles")
+          viewRoles();
+          break
+        case "View all employees":
+          console.log("you chose View Employees")
+          viewEmployees(); 
+          break
+        case "Quit":
+          process.exit(0);
+        defult:
+          console.log("Looks like we got confused.")
+        }
+  } catch (err){console.log(err)}
 };
+
+  
+//ADD: add a department, add a role, add an employee, and update an employee role
+ 
+  
+  
+
 
 doThis(); 
