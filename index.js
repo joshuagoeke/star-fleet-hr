@@ -202,6 +202,48 @@ async function addRole() {
 }
 // addRole();
 
+async function addEmployee() {
+  try{ 
+    let roleChoices=[];
+    const roleList = await db.query(`SELECT * FROM roles;`)
+    for (let i =0; i < roleList.length; i++){
+      roleChoices.push(roleList[i].job_title);
+    }
+    console.log(roleList);
+    console.log(roleChoices);
+    const newEmp = await inquirer.prompt ([
+    { 
+      type: 'input',
+      name: 'firstName',
+      message: "What is the employee's FIRST name?"
+    },
+    { 
+      type: 'input',
+      name: 'lastName',
+      message: "What is the employee's LAST name?"
+    },
+    { 
+      type: 'list',
+      name: 'rolePick',
+      message: "To what station will this employee be assigned?",
+      choices: roleChoices
+    },
+  ]);  
+  console.log(newEmp.firstName);
+  console.log(newEmp.lastName);
+  console.log(newEmp.rolePick);
+  const possibleManagers=[];
+  const  tempArr =  
+    await db.query(`SELECT job_title, dept_id FROM roles WHERE job_title = "${newEmp.rolePick}"`) 
+  console.log(tempArr)
+  const nummy = tempArr[0].dept_id
+  console.log((tempArr[0].dept_id).substring(0,1))
+  // const managerDeptCode = 
+  // const possmanage = await db.query(`SELECT * FROM employees WHERE role_id = 0## OR role_id = 1## OR role_id = ${};`)
+  // console.log(possmanage)
+  // const supervisor = await inquirer.prompt
+  }catch(err){console.log(err)};
+}
+addEmployee();
 
-
-doThis(); 
+// doThis(); 
