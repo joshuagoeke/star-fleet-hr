@@ -23,6 +23,10 @@ FROM starfleet_db.employees employee
 --add a department NOT TESTED
 INSERT INTO departments (id, dept_name)
 VALUES (`${user input variable }, ${user input variable }`);
+
+INSERT INTO departments (id, dept_name)
+VALUES (700, "Ops");
+
 --add a role NOT TESTED
 INSERT INTO roles (id, job_title, salary, dept_id)
 VALUES  (001, "Admiral", "400000", 010);

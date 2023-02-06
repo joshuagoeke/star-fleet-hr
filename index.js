@@ -15,6 +15,15 @@ _____________________________________
    ╋    *          ╋    *       *
 _____________________________________
 `)
+// function makeChoiceList(array, property) {
+//   const newarr = [];
+//   for (let i =0; i < array.length; i++){
+//     newarr.push(JSON.parse(`array[i].${property}`));
+//   }
+//   console.log(newarr);
+//   return (newarr)
+// }
+
 
 async function viewDepts() {
   try {
@@ -75,7 +84,10 @@ async function doThis() {
           "View all departments",
           "View all roles",
           "View all employees",
+          "Add a department",
+          "Add a role",
           "Quit",
+          //ADD: add an employee, and update an employee role
         ],
       }]);
       switch (input.userAction) {
@@ -91,6 +103,12 @@ async function doThis() {
           console.log("you chose View Employees")
           viewEmployees(); 
           break
+        case "Add a department":
+          console.log("you chose Add a Department");
+          addDepartment();
+          break
+        case "Add a role":
+          console.log("you chose Add a Role");
         case "Quit":
           process.exit(0);
         defult:
@@ -102,8 +120,47 @@ async function doThis() {
   
 //ADD: add a department, add a role, add an employee, and update an employee role
  
-  
-  
+async function addDepartment() {
+  console.log("Here's a current list of departments:")
+  try {
+    const result = await db.query(`SELECT dept_name AS Department, id AS 'Department ID' FROM starfleet_db.departments;
+    `)
+    console.table(result);
+    let deptNum = (result.length *100);
+    
+    const userNamed = await inquirer.prompt ([
+      { type: 'input',
+        name: 'newDept',
+        message: 'What is the new department called?'
+      }
+    ])
+console.log(userNamed.newDept)
+    await db.query(`INSERT INTO departments (id, dept_name) VALUES (${deptNum}, "${userNamed.newDept}"); 
+    `);
+    const newTable = await db.query(`SELECT dept_name AS Department, id AS 'Department ID' FROM starfleet_db.departments;`)
+    console.table(newTable);
+    console.log(`${userNamed.newDept} Department Added!`)
+    doThis();
+  } catch (error) {
+   console.log(error);
+  }
+
+}
+// addDepartment();
+
+async function addRole() {
+  try{
+    const deptList = await db.query(`SELECT dept_name FROM departments`)
+    console.log(deptList);
+    let inquarray = [];
+    for (let i =0; i < deptList.length; i++){
+      inquarray.push(deptList[i].dept_name);
+    }
+    console.log(inquarray);
+  }catch(err){console.log(err)};
+}
+addRole();
 
 
-doThis(); 
+
+// doThis(); 
