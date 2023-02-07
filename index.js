@@ -282,7 +282,8 @@ async function addEmployee() {
 
 async function updateEmployee(){
   try{
-  const updateList = await db.query(`SELECT employees.id, CONCAT(first_name,' ',last_name) AS name, job_title FROM employees JOIN roles ON employees.role_id = roles.id` )
+  const updateList = await db.query(`SELECT *, CONCAT(first_name,' ',last_name) AS name FROM employees JOIN roles ON employees.role_id = roles.id` )
+  
   const chosen = await inquirer.prompt([
     {
       type: 'list',
@@ -294,24 +295,35 @@ async function updateEmployee(){
 
   console.log(chosen.update)
   var notIt;
+  var employeeID;
   updateList.forEach(u =>{
     if (chosen.update === u.name){
       notIt = u.role_id;
+      employeeID = u.id;
     }
   });
+  
+
+  console.log(notIt);
   const newRoles = await db.query(`SELECT * FROM roles WHERE id != ${notIt}`)
   console.log(newRoles);
- 
-  console.log(newRoles);
+  const possibleRoles = [];
+  for (let i =0; i < newRoles.length; i++){
+    possibleRoles.push(newRoles[i].job_title);  
+  }
+  possibleRoles.push("Employee Resigned");
     const roleUpdate = await inquirer.prompt([
     {
       type: 'list',
       name: 'pick',
       message: "Which role will the employee be taking on?",
-      choices: newRoles
+      choices: possibleRoles
     },
   ]);
   console.log(roleUpdate.pick)
+  if (roleUpdate.pick === "Employee Resigned"){
+    db.query(`DELETE FROM employees WHERE id = ${employeeID}`)
+  }
 
   
   
