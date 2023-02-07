@@ -2,12 +2,12 @@
 
 In this homework assignment from the University of Texas-Austin Bootcamp we were asked to create a conent management system for an employee database using Node.js, Inquirer, and MySQL.
 
-# Crew Management System
+# Starfleet HR
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
 
-Building this app gave me the opportunity to learn about using Node.js to build a SQL database management system using MySQL and Inquirer.
+Building this app gave me the opportunity to learn about using Node.js to build a SQL database management system using MySQL and Inquirer. I also am gaining an appreciation for the usefulness of express routes and modularization in the app file systems, because the index.js file is rather large. I plan to fix this in future iterations!
 
 ## Acceptance Criteria
 
@@ -47,33 +47,39 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 Be sure after downloading and unzipping the directory to run in your integrated terminal or command prompt in the appropriate directory:
 
-- ```npm i```
-- ```node server.js```
+- (install mysql2 and node.js if you have not already done so)
+- in the root folder (same location as package.json), run ```npm i```
+- ```cd db```
+- log into mysql with ```mysql -u root -p```, enter your password, and then run ```SOURCE schema.sql;```
+- still in mysql: run ```SOURCE seeds.sql;```
+- quit mysql with ```quit```
+- ```cd ..``` to get back to the root folder
+- start Starfleet HR with ```node index.js```
 
 
 ## Usage
 
-Once the program is operating in the terminal, follow the prompts to answer questions about the type of employees that are being added to your department chart. Then, if desired, you can deploy the HTML page generated from the distribution (/dist) folder.
+Once the program is operating in the terminal, follow the prompts to answer questions to view various tables, add, or change information for employees.
 
     
-![Descriptive text](./directory)
+![Example preview](./assets/images/12-sql-homework-video-thumbnail.png?raw=true)
+
+![Example preview](./assets/images/starfleet-HR-in-action.jpg?raw=true)
     
 
 Demo video:
 
-https://www.loom.com/share/e48f694aef294dacb2938677f332d8b1
+
 
 ## Credits
 
 Thanks to fellow students in this bootcamp adventure:
 
+- Michael Smith https://github.com/AustinBQ02
 - Rebecca Girndt https://github.com/re-gi
 - Myeonghun Jeong "MJ" https://github.com/mjtic
-- Karen Peazzoni https://github.com/kpeazzoni
-- Chris Zavala https://github.com/chrisZavala
 
-A lot of the HTML came from Bootstrap, just so I could focus on the back-end tasks.
-https://getbootstrap.com/docs/4.0/components/card/
+Respect and big thanks to instructor Leah Nelson and tutor Megan Meyers for helping get me un-stuck on the tight timeline of this project.
 
 
 ## License

@@ -22,7 +22,7 @@ _____________________________________
 //   }
 //   console.log(newarr);
 //   return (newarr)
-// }
+// } //since I knew I was gonna have to do this a bunch of times I tried to make it a function, but failed. Might use later though
 
 
 async function viewDepts() {
@@ -36,7 +36,7 @@ async function viewDepts() {
    console.log(error);
   }
 }
-// viewDepts(); //for testing SQL
+// viewDepts(); 
 
 async function viewRoles() {
   try {
@@ -51,7 +51,7 @@ async function viewRoles() {
    console.log(error);
   }
 }
-// viewRoles(); //for testing SQL
+// viewRoles(); 
 
 async function viewEmployees() {
     try {
@@ -87,8 +87,8 @@ async function doThis() {
           "Add a department",
           "Add a role",
           "Add an employee",
+          "Update an employee role",
           "Quit",
-          //ADD: and update an employee role
         ],
       }]);
       switch (input.userAction) {
@@ -116,6 +116,10 @@ async function doThis() {
           console.log("you chose Add an Employee");
           addEmployee();
           break
+        case "Update an employee role":
+          console.log("you chose Update an Employee Role")
+          updateEmployee();
+          break
         case "Quit":
           process.exit(0);
         defult:
@@ -124,9 +128,6 @@ async function doThis() {
   } catch (err){console.log(err)}
 };
 
-  
-//ADD: add a department, add a role, add an employee, and update an employee role
- 
 async function addDepartment() {
   console.log("Here's a current list of departments:")
   try {
@@ -340,7 +341,6 @@ async function updateEmployee(){
   doThis();
   }catch(err){console.log(err)}
 };
-updateEmployee();
+// updateEmployee();
 
-
-// doThis(); 
+doThis(); 
