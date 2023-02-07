@@ -86,8 +86,9 @@ async function doThis() {
           "View all employees",
           "Add a department",
           "Add a role",
+          "Add an employee",
           "Quit",
-          //ADD: add an employee, and update an employee role
+          //ADD: and update an employee role
         ],
       }]);
       switch (input.userAction) {
@@ -110,6 +111,10 @@ async function doThis() {
         case "Add a role":
           console.log("you chose Add a Role");
           addRole();
+          break
+        case "Add an employee":
+          console.log("you chose Add an Employee");
+          addEmployee();
           break
         case "Quit":
           process.exit(0);
@@ -209,8 +214,6 @@ async function addEmployee() {
     for (let i =0; i < roleList.length; i++){
       roleChoices.push(roleList[i].job_title);
     }
-    console.log(roleList);
-    console.log(roleChoices);
     const newEmp = await inquirer.prompt ([
     { 
       type: 'input',
@@ -229,21 +232,93 @@ async function addEmployee() {
       choices: roleChoices
     },
   ]);  
-  console.log(newEmp.firstName);
-  console.log(newEmp.lastName);
-  console.log(newEmp.rolePick);
-  const possibleManagers=[];
+  //gets employee role_id based on role chosen
+  var empRoleID;
+    roleList.forEach(r => {
+       if (newEmp.rolePick === r.job_title){empRoleID =r.id}
+      });
+  //makes list of possible supervisors by department AND includes command officers
   const  tempArr =  
     await db.query(`SELECT job_title, dept_id FROM roles WHERE job_title = "${newEmp.rolePick}"`) 
-  console.log(tempArr)
-  const nummy = tempArr[0].dept_id
-  console.log((tempArr[0].dept_id).substring(0,1))
-  // const managerDeptCode = 
-  // const possmanage = await db.query(`SELECT * FROM employees WHERE role_id = 0## OR role_id = 1## OR role_id = ${};`)
-  // console.log(possmanage)
-  // const supervisor = await inquirer.prompt
+  const nummy = tempArr[0].dept_id;  
+  const managerDeptCode =((nummy).toString()).substring(0,1);
+  console.log(managerDeptCode);
+  const possibleManagers = 
+    await db.query(`SELECT *, CONCAT(first_name,' ', last_name) AS name FROM employees WHERE (role_id LIKE '1%' OR role_id LIKE '${managerDeptCode}%');`)
+ 
+  const managerNames=[];
+  for (let i =0; i < possibleManagers.length; i++){
+    managerNames.push(possibleManagers[i].name);
+  }
+  managerNames.push("No supervisor");
+  console.log(managerNames)
+  const supervisor = await inquirer.prompt([
+    { 
+      type: 'list',
+      name: 'boss',
+      message: "To whom shall this employee report?",
+      choices: managerNames
+    },
+  ])
+  //gets manager_id from manager name
+  var bossID; 
+    possibleManagers.forEach(e => {
+      if (supervisor.boss === "No supervisor"){
+        bossID = null;
+      }else{ if (supervisor.boss === e.name){bossID =e.id}}
+    });
+  //gives employee next sequential id by department
+  const empByDeptData = await db.query(`SELECT * FROM employees WHERE (role_id LIKE '${managerDeptCode}%')`)
+  const empID = await empByDeptData[empByDeptData.length -1].id + 1;
+  //adds employee to database
+  await db.query(`INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
+  VALUES (${empID}, "${newEmp.firstName}", "${newEmp.lastName}", ${empRoleID}, ${bossID});`)
+  //shows database
+  console.log(`Added ${empID}, ${newEmp.firstName}, ${newEmp.lastName}, ${empRoleID}, ${bossID} to employee table!`)
+  doThis();
   }catch(err){console.log(err)};
 }
-addEmployee();
+// addEmployee();
+
+async function updateEmployee(){
+  try{
+  const updateList = await db.query(`SELECT employees.id, CONCAT(first_name,' ',last_name) AS name, job_title FROM employees JOIN roles ON employees.role_id = roles.id` )
+  const chosen = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'update',
+      message: "Which employee needs updating?",
+      choices: updateList
+    }
+  ]);
+
+  console.log(chosen.update)
+  var notIt;
+  updateList.forEach(u =>{
+    if (chosen.update === u.name){
+      notIt = u.role_id;
+    }
+  });
+  const newRoles = await db.query(`SELECT * FROM roles WHERE id != ${notIt}`)
+  console.log(newRoles);
+ 
+  console.log(newRoles);
+    const roleUpdate = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'pick',
+      message: "Which role will the employee be taking on?",
+      choices: newRoles
+    },
+  ]);
+  console.log(roleUpdate.pick)
+
+  
+  
+  
+  }catch(err){console.log(err)}
+};
+updateEmployee();
+
 
 // doThis(); 
