@@ -142,7 +142,7 @@ async function addDepartment() {
         message: 'What is the new department called?'
       }
     ])
-console.log(userNamed.newDept)
+
     await db.query(`INSERT INTO departments (id, dept_name) VALUES (${deptNum}, "${userNamed.newDept}"); `);
     const newTable = await db.query(`SELECT dept_name AS Department, id AS 'Department ID' FROM starfleet_db.departments;`)
     console.table(newTable);
@@ -184,18 +184,14 @@ async function addRole() {
           message: "What is the annual salary for this position?"
         },
       ]);
-    // console.log(data)
-    // console.log(data.chosenDept);
+  
     var deptID; 
     deptList.forEach(e => {
       if (data.chosenDept === e.dept_name){deptID =e.id}
     });
-    // console.log(deptID)
-    // console.log(data.newRole);
-    // console.log(data.newSalary);
     const rolesData = await db.query(`SELECT * FROM roles WHERE dept_id = ${deptID}`)
     const roleID = deptID + rolesData.length + 1;
-    // console.log(roleID);
+    
     await db.query(`INSERT INTO roles (id, job_title, salary, dept_id) VALUES (${roleID}, "${data.newRole}", "${data.newSalary}", ${deptID}); `);
     const newDisplay = await db.query(`SELECT job_title AS Role, roles.id AS "Job ID",  departments.dept_name AS Department, roles.salary AS "Annual Salary"
     FROM starfleet_db.roles
@@ -243,7 +239,7 @@ async function addEmployee() {
     await db.query(`SELECT job_title, dept_id FROM roles WHERE job_title = "${newEmp.rolePick}"`) 
   const nummy = tempArr[0].dept_id;  
   const managerDeptCode =((nummy).toString()).substring(0,1);
-  console.log(managerDeptCode);
+  
   const possibleManagers = 
     await db.query(`SELECT *, CONCAT(first_name,' ', last_name) AS name FROM employees WHERE (role_id LIKE '1%' OR role_id LIKE '${managerDeptCode}%');`)
  
@@ -252,7 +248,7 @@ async function addEmployee() {
     managerNames.push(possibleManagers[i].name);
   }
   managerNames.push("No supervisor");
-  console.log(managerNames)
+  
   const supervisor = await inquirer.prompt([
     { 
       type: 'list',
@@ -284,7 +280,7 @@ async function addEmployee() {
 async function updateEmployee(){
   try{
   const updateList = await db.query(`SELECT employees.id, first_name, last_name, CONCAT(first_name,' ',last_name) AS name, role_id, job_title, manager_id FROM employees JOIN roles ON employees.role_id = roles.id` )
-  console.log(updateList)
+  
   const chosen = await inquirer.prompt([
     {
       type: 'list',
@@ -294,7 +290,6 @@ async function updateEmployee(){
     }
   ]);
   
-  console.log(chosen.update)
   var notIt;
   var employeeID;
   updateList.forEach(u =>{
@@ -303,10 +298,9 @@ async function updateEmployee(){
       employeeID = u.id;
     }
   });
-  console.log(notIt);
-  console.log(employeeID);
+  
   const newRoles = await db.query(`SELECT * FROM roles WHERE id != ${notIt}`)
-  console.log(newRoles);
+  
   const possibleRoles = [];
   for (let i =0; i < newRoles.length; i++){
     possibleRoles.push(newRoles[i].job_title);  
@@ -320,7 +314,7 @@ async function updateEmployee(){
       choices: possibleRoles
     },
   ]);
-  console.log(roleUpdate.pick)
+  
   var updatePickCode;
   if (roleUpdate.pick === "Employee Resigned"){
     db.query(`DELETE FROM employees WHERE id = ${employeeID};`);
@@ -330,14 +324,11 @@ async function updateEmployee(){
       updatePickCode = r.id;
     }
   })
-    // console.log(newRoles);
-    console.log(updatePickCode);
+   
     db.query(`UPDATE employees SET role_id = ${updatePickCode} WHERE id = ${employeeID};`)
     console.log(`Choose "View employees" to see job title updated to ${roleUpdate.pick} for ${chosen.update}`)
   }
 
-  
-  
   doThis();
   }catch(err){console.log(err)}
 };

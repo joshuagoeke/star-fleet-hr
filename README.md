@@ -69,7 +69,7 @@ Once the program is operating in the terminal, follow the prompts to answer ques
 
 Demo video:
 
-
+https://www.loom.com/share/fdde4ed0a574451c922562346e8bfd63
 
 ## Credits
 
